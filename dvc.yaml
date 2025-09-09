@@ -1,0 +1,15 @@
+stages:
+  preprocess:
+    cmd: python src/data_processing/preprocessor.py
+    deps:
+      - data/raw/dataset.csv
+      - src/data_processing/preprocessor.py
+    outs:
+      - data/processed/cleaned.csv
+  train:
+    cmd: python src/model/train.py
+    deps:
+      - data/processed/cleaned.csv
+      - src/model/train.py
+    outs:
+      - models/chatbot_model.pt

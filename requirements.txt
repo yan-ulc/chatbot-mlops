@@ -1,0 +1,33 @@
+# MLOps-Chatbot Project Requirements
+
+# --- API Service ---
+# Framework untuk membangun API
+fastapi
+# Server untuk menjalankan aplikasi FastAPI
+uvicorn[standard]
+
+# --- Machine Learning & Data Handling ---
+# Library utama untuk machine learning
+scikit-learn
+# Untuk manipulasi dan analisis data (DataFrame)
+pandas
+# Library fundamental untuk komputasi numerik
+numpy
+# Untuk menggunakan model pre-trained dari Hugging Face
+transformers
+# Deep learning framework (dependency untuk transformers)
+torch
+
+# --- Kafka Streaming ---
+# Library client untuk berinteraksi dengan Kafka
+kafka-python
+
+# --- MLOps Tools ---
+# Untuk version control data
+dvc
+# Untuk experiment tracking dan model registry
+mlflow
+
+# --- Utilities ---
+# Untuk mengelola environment variables (misal: API keys, DSN)
+python-dotenv
