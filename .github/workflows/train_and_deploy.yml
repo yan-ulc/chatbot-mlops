@@ -1,0 +1,51 @@
+# Nama alur kerja (workflow) yang akan tampil di tab "Actions" GitHub
+name: MLOps Training Pipeline
+
+# Pemicu (Trigger): Kapan workflow ini harus berjalan?
+# Dalam kasus ini, setiap kali ada 'push' ke branch 'main'
+on:
+  push:
+    branches:
+      - main
+
+# Pekerjaan (Jobs): Daftar tugas yang harus dilakukan
+jobs:
+  train-model:
+    # Tentukan sistem operasi server virtual yang akan digunakan
+    runs-on: ubuntu-latest
+
+    # Langkah-langkah (Steps) yang akan dieksekusi secara berurutan
+    steps:
+      # Langkah 1: "Checkout" atau download kode dari repository kita
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Langkah 2: Setup lingkungan Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9' # Sesuaikan dengan versi Python-mu
+
+      # Langkah 3: Install semua library yang dibutuhkan
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      # Langkah 4 (Penting untuk MLOps): Tarik data dari DVC
+      # Workflow ini membutuhkan konfigurasi DVC remote (misal: Google Drive, S3)
+      # dan setup secrets di GitHub untuk otentikasi.
+      - name: Pull data from DVC
+        uses: iterative/dvc-action@v0.0.9
+        # env:
+        #   GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+
+      # Langkah 5: Jalankan skrip training
+      # Kita perlu mengatur MLFLOW_TRACKING_URI agar menunjuk ke server MLflow
+      # yang bisa diakses oleh GitHub Actions (bukan localhost).
+      - name: Run model training script
+        run: python src/model/train.py
+        # env:
+        #   MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
+        #   MLFLOW_TRACKING_USERNAME: ${{ secrets.MLFLOW_TRACKING_USERNAME }}
+        #   MLFLOW_TRACKING_PASSWORD: ${{ secrets.MLFLOW_TRACKING_PASSWORD }}
